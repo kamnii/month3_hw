@@ -1,12 +1,13 @@
 from aiogram.utils import executor
 from config import dp
 import logging
-from handlers import extra, client, callback, admin
+from handlers import extra, client, callback, admin, fsm_admin
 
 
 client.register_client_handler(dp)
 callback.register_callback_handler(dp)
 admin.register_admin_handler(dp)
+fsm_admin.register_fsm_admin_handler(dp)
 extra.register_extra_handler(dp)
 
 
