@@ -24,12 +24,6 @@ async def fsm_start(message: types.Message):
 async def load_name(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['id'] = message.message_id
-        # lst = []
-        # k = random.randint(100000, 999999)
-        # while k in lst:
-        #     k = random.randint(100000, 999999)
-        # lst.append(k)
-        # data['id'] = k
         data['name'] = message.text
     await FSMAdmin.next()
     await message.answer("Направление")
