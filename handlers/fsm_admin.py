@@ -2,15 +2,16 @@ from aiogram import types, Dispatcher
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from config import bot, ADMIN
-import random
+from database.bot_db import sql_command_insert
+from buttons.keyboard_buttons import submit_markup
 
 
 class FSMAdmin(StatesGroup):
-
     name = State()
     direction = State()
     age = State()
     group = State()
+    submit = State()
 
 
 async def fsm_start(message: types.Message):
@@ -49,9 +50,24 @@ async def load_age(message: types.Message, state: FSMContext):
 async def load_group(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['group'] = message.text
-    await state.finish()
-    await message.answer("Ментор добавлен в базу")
-    print(data)
+    await message.answer(f"Имя => {data['name']}\n"
+                         f"Направление => {data['direction']}\n"
+                         f"Возраст => {data['age']}\n"
+                         f"Группа => {data['group']}")
+    await FSMAdmin.next()
+    await message.answer('Всё верно?', reply_markup=submit_markup)
+
+
+async def submit(message: types.Message, state: FSMContext):
+    if message.text.lower() == 'да':
+        await sql_command_insert(state)
+        await state.finish()
+        await message.answer("Ментор добавлен в базу")
+    elif message.text.lower() == 'нет':
+        await state.finish()
+        await message.answer("Отменено")
+    else:
+        await message.answer("Не понял")
 
 
 def register_fsm_admin_handler(dp: Dispatcher):
@@ -60,3 +76,4 @@ def register_fsm_admin_handler(dp: Dispatcher):
     dp.register_message_handler(load_direction, state=FSMAdmin.direction)
     dp.register_message_handler(load_age, state=FSMAdmin.age)
     dp.register_message_handler(load_group, state=FSMAdmin.group)
+    dp.register_message_handler(submit, state=FSMAdmin.submit)

@@ -2,6 +2,7 @@ from aiogram import types, Dispatcher
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from config import bot
 import random
+from database.bot_db import sql_command_backend, sql_command_frontend
 
 
 lst = ['group', 'supergroup']
@@ -76,8 +77,18 @@ async def quiz_1(message: types.Message):
     )
 
 
+async def get_back_mentors(message: types.Message):
+    await sql_command_backend(message)
+
+
+async def get_front_mentors(message: types.Message):
+    await sql_command_frontend(message)
+
+
 def register_client_handler(dp: Dispatcher):
     dp.register_message_handler(start_handler, commands=['start'])
     dp.register_message_handler(mem_handler, commands=['mem'])
     dp.register_message_handler(quiz_1, commands=['quiz'])
     dp.register_message_handler(dice, commands=['dice'])
+    dp.register_message_handler(sql_command_backend, commands=['backend'])
+    dp.register_message_handler(sql_command_frontend, commands=['frontend'])
