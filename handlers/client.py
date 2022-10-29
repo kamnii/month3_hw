@@ -1,9 +1,9 @@
-from aiogram import types, Dispatcher
+from database.bot_db import sql_command_backend, sql_command_frontend, sql_command_android, sql_command_ios
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from aiogram import types, Dispatcher
 from config import bot
+from buttons.inline_buttons import genre_markup
 import random
-from database.bot_db import sql_command_backend, sql_command_frontend
-
 
 lst = ['group', 'supergroup']
 
@@ -77,12 +77,24 @@ async def quiz_1(message: types.Message):
     )
 
 
-async def get_back_mentors(message: types.Message):
+async def get_backend_mentors(message: types.Message):
     await sql_command_backend(message)
 
 
-async def get_front_mentors(message: types.Message):
+async def get_frontend_mentors(message: types.Message):
     await sql_command_frontend(message)
+
+
+async def get_android_mentors(message: types.Message):
+    await sql_command_android(message)
+
+
+async def get_ios_mentors(message: types.Message):
+    await sql_command_ios(message)
+
+
+async def get_anime(message: types.Message):
+    await message.answer('Какой жанр хотите?', reply_markup=genre_markup)
 
 
 def register_client_handler(dp: Dispatcher):
@@ -90,5 +102,8 @@ def register_client_handler(dp: Dispatcher):
     dp.register_message_handler(mem_handler, commands=['mem'])
     dp.register_message_handler(quiz_1, commands=['quiz'])
     dp.register_message_handler(dice, commands=['dice'])
-    dp.register_message_handler(sql_command_backend, commands=['backend'])
-    dp.register_message_handler(sql_command_frontend, commands=['frontend'])
+    dp.register_message_handler(get_backend_mentors, commands=['backend_men'])
+    dp.register_message_handler(get_frontend_mentors, commands=['frontend_men'])
+    dp.register_message_handler(get_android_mentors, commands=['android_men'])
+    dp.register_message_handler(get_ios_mentors, commands=['ios_men'])
+    dp.register_message_handler(get_anime, commands=['anime'])

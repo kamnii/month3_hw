@@ -70,8 +70,16 @@ async def submit(message: types.Message, state: FSMContext):
         await message.answer("Не понял")
 
 
+async def cancel(message: types.Message, state: FSMContext):
+    current_state = await state.get_state()
+    if current_state is not None:
+        await state.finish()
+        await message.answer('Отменено')
+
+
 def register_fsm_admin_handler(dp: Dispatcher):
-    dp.register_message_handler(fsm_start, commands=['add_mentor'])
+    dp.register_message_handler(cancel, state='*', commands=['cancel'])
+    dp.register_message_handler(fsm_start, commands=['add_men'])
     dp.register_message_handler(load_name, state=FSMAdmin.name)
     dp.register_message_handler(load_direction, state=FSMAdmin.direction)
     dp.register_message_handler(load_age, state=FSMAdmin.age)
