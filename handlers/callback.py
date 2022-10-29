@@ -2,7 +2,7 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from database.bot_db import sql_command_delete_mentor
 from aiogram import types, Dispatcher
 from config import bot
-from pars.comedy_anime import parser_comedy, parser_romance, parser_sport, parser_adventure, parser_detectives, \
+from pars.anime import parser_comedy, parser_romance, parser_sport, parser_adventure, parser_detectives, \
     parser_everyday, parser_fantasy, parser_horrors
 
 lst = ['group', 'supergroup']
