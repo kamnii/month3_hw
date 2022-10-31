@@ -1,4 +1,4 @@
-FROM python:3.9
+FROM python:3.10
 
 EXPOSE 1111
 
@@ -9,4 +9,4 @@ COPY . /opt/services/bot/kaniet-bot/
 
 RUN pip install -r requirements.txt
 
-CMD ['python', '/opt/services/bot/kaniet-bot/main.py']
+CMD ["python", "/opt/services/bot/kaniet-bot/main.py"]
