@@ -1,6 +1,6 @@
 FROM python:3.9
 
-EXPOSE 5102004
+EXPOSE 1111
 
 RUN mkdir -p /opt/services/bot/kaniet-bot
 WORKDIR /opt/services/bot/kaniet-bot
