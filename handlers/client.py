@@ -10,7 +10,24 @@ lst = ['group', 'supergroup']
 
 # @dp.message_handler(commands=['start'])
 async def start_handler(message: types.Message):
-    await message.answer(f'Приветствую тебя, {message.from_user.first_name}!')
+    await message.answer(f'Приветствую тебя, {message.from_user.first_name}! '
+                         f'Для того чтобы увидеть список команд нажми на /help')
+
+
+async def help_handler(message: types.Message):
+    await message.answer(f'/dice - игра с ботом\n'
+                         f'/mem - случайный мем\n'
+                         f'/quiz - викторина\n'
+                         f'/anime - ссылки на аниме\n'
+                         f'/pin - закрепить сообщение(ответом на сообщение)\n'
+                         f'/backend_men - случайный ментор с Backend\n'
+                         f'/frontend_men - случайный ментор с Frontend\n'
+                         f'/android_men - случайный ментор с Android\n'
+                         f'/ios_men - случайный ментор с Ios\n\n'
+                         f'Для админов:\n'
+                         f'/add_men - добавить ментора в БД\n'
+                         f'/del_men - удаление менторов с БД\n'
+                         f'')
 
 
 async def dice(message: types.Message):
@@ -107,3 +124,4 @@ def register_client_handler(dp: Dispatcher):
     dp.register_message_handler(get_android_mentors, commands=['android_men'])
     dp.register_message_handler(get_ios_mentors, commands=['ios_men'])
     dp.register_message_handler(get_anime, commands=['anime'])
+    dp.register_message_handler(help_handler, commands=['help'])
